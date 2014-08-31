@@ -41,12 +41,12 @@ var socketConnect = function() {
                             data = JSON.parse(msg);
                             if(data[0] !== 'data')
                                 self.emit(data[0], data[1]);
+                        } else {
+                            break;
                         }
                     } else {
                         break;
                     }
-                } else {
-                    break;
                 }
             });
 
