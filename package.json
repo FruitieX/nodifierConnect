@@ -2,7 +2,7 @@
   "name": "nodifier_connect",
   "version": "0.0.1",
   "description": "nodifier networking library",
-  "main": "nodifierConnect.js",
+  "main": "nodifier_connect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
