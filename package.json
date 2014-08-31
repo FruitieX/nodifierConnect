@@ -1,6 +1,6 @@
 {
   "name": "nodifier_connect",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "nodifier networking library",
   "main": "nodifier_connect.js",
   "scripts": {
