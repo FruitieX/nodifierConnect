@@ -21,27 +21,33 @@ var socketConnect = function() {
     var connect = function(callback) {
         socket = tls.connect(config.port, config.host, options, function() {
             socket.on('data', function(data) {
-				// message format is assumed to be:
-				// 1234["string", {...}]
-				// where 1234 is message length
-				recvBuffer += data.toString();
+                // message format is assumed to be:
+                // 1234["string", {...}]
+                // where 1234 is message length
+                recvBuffer += data.toString();
 
-				// recv'd the msg length integer if we have a '[' char
-				var msgLenEnd = recvBuffer.indexOf('[');
-				if(msgLenEnd !== -1) {
-					var len = recvBuffer.substr(0, msgLenEnd);
-					var msg = recvBuffer.substr(msgLenEnd, len);
+                while(true) {
+                    // recv'd the msg length integer if we have a '[' char
+                    var msgLenEnd = recvBuffer.indexOf('[');
+                    if(msgLenEnd !== -1) {
+                        var len = parseInt(recvBuffer.substr(0, msgLenEnd));
+                        var msg = recvBuffer.substr(msgLenEnd, len);
 
-					// got entire msg?
-					if(msg.length == len) {
-						// remove msg from buffer, then handle it
-						recvBuffer = recvBuffer.substr(msgLenEnd + len);
+                        // got entire msg?
+                        if(msg.length == len) {
+                            // remove msg from buffer, then handle it
+                            recvBuffer = recvBuffer.substr(msgLenEnd + len);
 
-						data = JSON.parse(msg);
-						if(data[0] !== 'data')
-							self.emit(data[0], data[1]);
-					}
-				}
+                            data = JSON.parse(msg);
+                            if(data[0] !== 'data')
+                                self.emit(data[0], data[1]);
+                        }
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
             });
 
             self.emit('open');
